@@ -1,0 +1,30 @@
+# Dependency directories
+/node_modules
+/venv
+
+# Build and production artifacts
+/frontend/build
+/backend/dist
+/backend/__pycache__
+*.pyc
+
+# Docker artifacts
+docker-compose.yml
+Dockerfile.backend
+Dockerfile.frontend
+
+# Environment variables and secrets
+# It's crucial to not commit your credentials to GitHub
+.env
+.flaskenv
+*.sqlite3
+*.db
+/backend/inventory.db
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# IDE-specific files
+.vscode/
+.idea/
