@@ -16,6 +16,6 @@ COPY ./backend .
 # Make port 5000 available to the world outside this container
 EXPOSE 5000
 
-# Run the application
-CMD ["flask", "run", "--host=0.0.0.0"]
-
+# Run the application using the python module command
+# This is more reliable than calling "flask" directly
+CMD ["python3", "-m", "flask", "run", "--host=0.0.0.0"]
