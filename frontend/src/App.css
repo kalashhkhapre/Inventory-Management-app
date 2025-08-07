@@ -1,0 +1,131 @@
+/* Color Palette */
+:root {
+  --primary-color: #5b65f0;
+  --secondary-color: #8257e6;
+  --bg-color: #f0f2f5;
+  --card-bg: #ffffff;
+  --text-color: #2e3a59;
+  --border-color: #e4e7ed;
+  --success-color: #28a745;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.main-content {
+  display: flex;
+  gap: 20px;
+}
+
+.add-product-card, .product-list-card {
+  background-color: var(--card-bg);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  flex: 1;
+}
+
+.add-product-card {
+  max-width: 400px;
+}
+
+h3 {
+  margin-top: 0;
+  font-size: 20px;
+}
+
+.product-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-input {
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(91, 101, 240, 0.2);
+}
+
+.add-button {
+  background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-button:hover {
+  opacity: 0.9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.product-list-card {
+  flex: 2;
+}
+
+.product-table {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 10px;
+}
+
+.table-header {
+  font-weight: bold;
+  padding: 10px 0;
+  border-bottom: 2px solid var(--border-color);
+  display: contents;
+}
+
+.table-row {
+  display: contents;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.table-row > div, .table-header > div {
+  padding: 10px;
+}
+
+.empty-list-message {
+  grid-column: span 2;
+  text-align: center;
+  color: #777;
+  padding: 40px;
+}
