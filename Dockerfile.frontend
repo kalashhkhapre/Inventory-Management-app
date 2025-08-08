@@ -21,4 +21,3 @@ EXPOSE 80
 # This command dynamically sets the API_URL environment variable from the Docker Compose file
 # and replaces it in the Nginx configuration before starting Nginx.
 CMD ["/bin/sh", "-c", "envsubst '$API_URL' < /etc/nginx/conf.d/default.conf > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
-
