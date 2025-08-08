@@ -1,71 +1,53 @@
 version: '3.8'
 
-# Defines the services for your application. Each service corresponds to a container.
 services:
-
-  # The MySQL database service.
-  # This container runs the MySQL database without needing it installed on your machine.
   mysql:
     image: mysql:8.0
     container_name: mysql_db
     environment:
-      # These environment variables are used by the MySQL image to set up the database.
-      # The values here must match the connection details in the backend service.
       - MYSQL_ROOT_PASSWORD=rootpassword
       - MYSQL_DATABASE=inventory_db
       - MYSQL_USER=user
       - MYSQL_PASSWORD=password
     volumes:
-      # This volume ensures that your database data persists even if the container is stopped or removed.
       - mysql-data:/var/lib/mysql
     ports:
-      # Maps the container's MySQL port to your local machine's port.
       - "3306:3306"
     restart: always
 
-  # The Python backend service.
-  # This container runs the Flask application, handling all the business logic and API calls.
   backend:
     build:
       context: .
       dockerfile: Dockerfile.backend
     container_name: backend_app
     ports:
-      # Maps the backend's internal port to your local machine.
       - "5000:5000"
     volumes:
-      # Mounts your local backend code into the container for easy development.
       - ./backend:/app
     environment:
-      # These environment variables are read by your Flask app to connect to the MySQL service.
       - FLASK_APP=app.py
       - FLASK_ENV=development
       - MYSQL_USER=user
       - MYSQL_PASSWORD=password
-      - MYSQL_HOST=mysql  # The service name "mysql" is the hostname for the database.
+      - MYSQL_HOST=mysql
       - MYSQL_DATABASE=inventory_db
     depends_on:
-      # Ensures the MySQL database is running before the backend container starts.
       - mysql
     restart: always
 
-  # The React frontend service.
-  # This container builds the React app and serves the static files using Nginx.
   frontend:
     build:
       context: .
       dockerfile: Dockerfile.frontend
     container_name: frontend_app
     ports:
-      # Maps the frontend's web server port to your local machine.
       - "80:80"
+    environment:
+      - API_URL=http://backend:5000
     depends_on:
-      # Ensures the backend is running before the frontend can make API calls.
       - backend
     restart: always
 
-# Defines the named volume for the MySQL data.
-# This is where your database data will be stored on the host machine.
 volumes:
   mysql-data:
 
