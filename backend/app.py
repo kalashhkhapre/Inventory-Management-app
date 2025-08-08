@@ -18,7 +18,7 @@ def create_app():
     # Enable Cross-Origin Resource Sharing (CORS) for the frontend
     CORS(app)
 
-    # Initialize the SQLAlchemy instance with the app here
+    # Initialize the SQLAlchemy instance with the app
     db.init_app(app)
 
     # Add a robust retry loop to wait for the database connection
@@ -30,8 +30,9 @@ def create_app():
                 db.create_all()
             print("Successfully connected to the database!")
             break  # Exit the loop on success
-        except OperationalError:
+        except OperationalError as e:
             print(f"Attempt {i+1} of {max_retries}: Could not connect to the database. Retrying in {retry_delay} seconds...")
+            print(f"Error: {e}")
             time.sleep(retry_delay)
     else:
         # This code runs if the loop completes without a 'break'
