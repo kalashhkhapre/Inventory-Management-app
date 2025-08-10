@@ -16,15 +16,28 @@ def create_new_product(data):
     """
     if not data or 'name' not in data or 'quantity' not in data:
         return None, "Invalid data. 'name' and 'quantity' are required.", 400
-    
+
+    # Validate and convert types
+    try:
+        quantity = int(data['quantity'])
+    except (ValueError, TypeError):
+        return None, "'quantity' must be an integer.", 400
+
+    price = None
+    if 'price' in data and data['price'] is not None:
+        try:
+            price = float(data['price'])
+        except (ValueError, TypeError):
+            return None, "'price' must be a number.", 400
+
     if Product.query.filter_by(name=data['name']).first():
         return None, "Product with this name already exists.", 409
 
     new_product = Product(
         name=data['name'], 
         category=data.get('category'), # Use .get() for optional fields
-        quantity=data['quantity'],
-        price=data.get('price') # Use .get() for optional fields
+        quantity=quantity,
+        price=price # Use .get() for optional fields
     )
     try:
         db.session.add(new_product)

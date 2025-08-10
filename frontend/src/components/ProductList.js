@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ProductList = ({ products }) => {
+const ProductList = ({ products, onEdit, onDelete }) => {
   return (
     <div className="product-list-card">
       <h3 className="card-title">Product List</h3>
@@ -28,10 +28,17 @@ const ProductList = ({ products }) => {
                   <td>{product.quantity}</td>
                   <td>${product.price ? product.price.toFixed(2) : '0.00'}</td>
                   <td>
-                    {/* Placeholder for Edit/Delete icons */}
                     <div className="actions-icons">
-                      <span className="icon">✏️</span>
-                      <span className="icon">🗑️</span>
+                      <span
+                        className="icon"
+                        onClick={() => onEdit && onEdit(product)}
+                        title="Edit"
+                      >✏️</span>
+                      <span
+                        className="icon"
+                        onClick={() => onDelete && onDelete(product.id)}
+                        title="Delete"
+                      >🗑️</span>
                     </div>
                   </td>
                 </tr>

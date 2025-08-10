@@ -10,10 +10,14 @@ from routes.auth import auth_bp
 def create_app():
     """Factory function to create and configure the Flask app."""
     app = Flask(__name__)
-    
-    # Use environment variable to select configuration
+
+    # Directly import config class for WSL/local usage
+    from config import DevelopmentConfig, ProductionConfig
     app_settings = os.environ.get('APP_SETTINGS', 'config.DevelopmentConfig')
-    app.config.from_object(app_settings)
+    if app_settings == "config.ProductionConfig":
+        app.config.from_object(ProductionConfig)
+    else:
+        app.config.from_object(DevelopmentConfig)
 
     # Enable Cross-Origin Resource Sharing (CORS) for the frontend
     CORS(app)
@@ -44,6 +48,13 @@ def create_app():
     app.register_blueprint(auth_bp)
 
     return app
+
+if __name__ == '__main__':
+    app = create_app()
+    app.run(host='0.0.0.0', port=5000)
+    # Register blueprints (routes)
+    app.register_blueprint(inventory_bp)
+    app.register_blueprint(auth_bp)
 
 if __name__ == '__main__':
     app = create_app()

@@ -15,6 +15,23 @@ function App() {
     fetchProducts();
   }, []);
 
+  // Handler for deleting a product
+  const handleDeleteProduct = async (productId) => {
+    if (window.confirm('Are you sure you want to delete this product?')) {
+      try {
+        await inventoryApi.deleteProduct(productId);
+        fetchProducts();
+      } catch (error) {
+        alert('Failed to delete product!');
+      }
+    }
+  };
+
+  // Handler for editing a product (placeholder)
+  const handleEditProduct = (product) => {
+    alert(`Edit functionality not implemented for product: ${product.name}`);
+  };
+
   return (
     <div className="app-container">
       <header className="app-header">
@@ -36,7 +53,11 @@ function App() {
           <AddProductForm onProductAdded={fetchProducts} />
         </div>
         <div className="right-panel">
-          <ProductList products={products} />
+          <ProductList
+            products={products}
+            onEdit={handleEditProduct}
+            onDelete={handleDeleteProduct}
+          />
         </div>
       </main>
     </div>
