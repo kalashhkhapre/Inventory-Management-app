@@ -5,15 +5,20 @@ services:
     image: mysql:8.0
     container_name: mysql_db
     environment:
-      - MYSQL_ROOT_PASSWORD=rootpassword
-      - MYSQL_DATABASE=inventory_db
-      - MYSQL_USER=user
-      - MYSQL_PASSWORD=password
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: inventory_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
     volumes:
       - mysql-data:/var/lib/mysql
     ports:
       - "3306:3306"
     restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-prootpassword"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   backend:
     build:
@@ -25,14 +30,15 @@ services:
     volumes:
       - ./backend:/app
     environment:
-      - FLASK_APP=app.py
-      - FLASK_ENV=development
-      - MYSQL_USER=user
-      - MYSQL_PASSWORD=password
-      - MYSQL_HOST=mysql
-      - MYSQL_DATABASE=inventory_db
+      FLASK_APP: app.py
+      FLASK_ENV: development
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_HOST: mysql
+      MYSQL_DATABASE: inventory_db
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     restart: always
 
   frontend:
@@ -43,11 +49,11 @@ services:
     ports:
       - "80:80"
     environment:
-      - API_URL=http://backend:5000
+      API_URL: http://backend:5000
     depends_on:
-      - backend
+      backend:
+        condition: service_started
     restart: always
 
 volumes:
   mysql-data:
-
