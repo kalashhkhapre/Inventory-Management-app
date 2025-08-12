@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV '/mnt/d/Resume Projects/Inventory-Management-App/Inventory-Management-app/backend/venv'
+set -gx VIRTUAL_ENV '/mnt/d/Resume Projects/Inventory-Management-app/backend/venv'
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/"bin $PATH

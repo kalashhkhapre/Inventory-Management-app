@@ -1,24 +1,28 @@
 from flask_sqlalchemy import SQLAlchemy
 
-# Create an instance of SQLAlchemy, but don't initialize it here.
-# It will be initialized in app.py.
 db = SQLAlchemy()
 
-class Product(db.Model):
-    """Represents the 'products' table in the database."""
+class BaseModel(db.Model):
+    """Base model with common fields."""
+    __abstract__ = True
+
+    created_at = db.Column(db.DateTime, default=db.func.now(), nullable=False)
+    updated_at = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now(), nullable=False)
+
+    def to_dict(self):
+        """Converts model instance to dictionary."""
+        return {column.name: getattr(self, column.name) for column in self.__table__.columns}
+
+
+class Product(BaseModel):
+    """Represents the 'products' table."""
     __tablename__ = 'products'
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
     category = db.Column(db.String(80), nullable=True)
     quantity = db.Column(db.Integer, nullable=False, default=0)
     price = db.Column(db.Float, nullable=True)
 
-    def to_dict(self):
-        """Converts the product object to a dictionary for JSON serialization."""
-        return {
-            'id': self.id,
-            'name': self.name,
-            'category': self.category,
-            'quantity': self.quantity,
-            'price': self.price
-        }
+    def __repr__(self):
+        return f"<Product {self.id} - {self.name}>"
